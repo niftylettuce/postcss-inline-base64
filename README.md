@@ -1,6 +1,6 @@
 # PostCSS Inline Base64 [![Build Status][ci-img]][ci]
 
-> [PostCSS] plugin for replace file to base64 encode.
+[PostCSS] plugin for replace file to base64 encode.
 
 [PostCSS]: https://github.com/postcss/postcss
 [ci-img]:  https://travis-ci.org/lagden/postcss-inline-base64.svg
