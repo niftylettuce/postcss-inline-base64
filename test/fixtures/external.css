@@ -1,0 +1,8 @@
+body {
+  background-color: gray;
+  background-image: url(base64('http://cdn.lagden.in/mask.png'));
+}
+
+.example {
+  background-image: url('http://cdn.lagden.in/mask.png');
+}

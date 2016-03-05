@@ -1,0 +1,43 @@
+{
+  "name": "postcss-inline-base64",
+  "version": "1.0.0",
+  "description": "PostCSS plugin for replace file to base64 encode",
+  "keywords": [
+    "postcss",
+    "css",
+    "postcss-plugin",
+    "base64",
+    "file",
+    "inline"
+  ],
+  "author": "Thiago Lagden <lagden@gmail.com>",
+  "license": "MIT",
+  "repository": "lagden/postcss-inline-base64",
+  "bugs": {
+    "url": "https://github.com/lagden/postcss-inline-base64/issues"
+  },
+  "homepage": "https://github.com/lagden/postcss-inline-base64",
+  "dependencies": {
+    "file-type": "^3.8.0",
+    "got": "^6.2.0",
+    "is-svg": "^1.1.1",
+    "lagden-promisify": "^2.0.0",
+    "postcss": "^5.0.16"
+  },
+  "devDependencies": {
+    "ava": "^0.12.0",
+    "codecov": "^1.0.1",
+    "eslint-config-postcss": "^2.0.0",
+    "nyc": "^6.0.0",
+    "xo": "^0.12.1"
+  },
+  "engines": {
+    "node": ">=5.0.0"
+  },
+  "scripts": {
+    "report": "nyc report --reporter=html",
+    "coverage": "nyc report --reporter=lcov | codecov",
+    "pretest": "xo",
+    "test": "nyc ava"
+  }
+}

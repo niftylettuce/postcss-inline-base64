@@ -1,0 +1,7 @@
+.editorconfig
+.gitignore
+.travis.yml
+
+test/
+node_modules/
+npm-debug.log
