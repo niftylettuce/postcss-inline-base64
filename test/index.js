@@ -8,10 +8,8 @@ import plugin from '../';
 
 const cssLocal = readFileSync(join(__dirname, 'fixtures', 'local.css')).toString('utf-8');
 const cssLocalOut = readFileSync(join(__dirname, 'fixtures', 'local.out.css')).toString('utf-8');
-
 const cssExternal = readFileSync(join(__dirname, 'fixtures', 'external.css')).toString('utf-8');
 const cssExternalOut = readFileSync(join(__dirname, 'fixtures', 'external.out.css')).toString('utf-8');
-
 const baseDir = join(__dirname, 'fixtures');
 
 function run(t, input, output, opts = { }) {
@@ -23,16 +21,20 @@ function run(t, input, output, opts = { }) {
 }
 
 test('local files', t => {
-	return run(t, cssLocal, cssLocalOut, {baseDir});
+	return run(t, cssLocal, cssLocalOut, {
+		baseDir
+	});
 });
 
 test('external files', t => {
 	return run(t, cssExternal, cssExternalOut);
 });
 
-test('no file', t => {
-	return postcss([plugin({baseDir: join(__dirname)})]).process('.test {background-image: url(base64(\'./fixtures\'));}')
-		.catch(err => {
-			t.same(err.statusMessage, 'Bad Request');
-		});
+test('no file', async t => {
+	try {
+		await postcss([plugin({baseDir: join(__dirname)})]).process('.test {background-image: url(base64(\'./fixtures\'));}');
+		t.fail('Exception was not thrown');
+	} catch (err) {
+		t.is(err.message, 'Response code 400 (Bad Request)');
+	}
 });
