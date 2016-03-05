@@ -19,7 +19,13 @@ function find(file, dir) {
 			}
 			return Promise.reject('It is not a file');
 		})
-		.catch(() => got(file, {encoding: null}).then(r => r.body));
+		.catch(() => {
+			const isUrl = /^(https?:|ftp:)?\/\/([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(file);
+			if (isUrl) {
+				return got(file, {encoding: null}).then(r => r.body);
+			}
+			return Promise.reject('It is not an url');
+		});
 }
 
 function inLine(file, dir) {

@@ -3,6 +3,8 @@
 .gitignore
 .travis.yml
 
+.nyc_output/
+coverage/
 test/
 node_modules/
 npm-debug.log

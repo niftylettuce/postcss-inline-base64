@@ -35,6 +35,15 @@ test('no file', async t => {
 		await postcss([plugin({baseDir: join(__dirname)})]).process('.test {background-image: url(base64(\'./fixtures\'));}');
 		t.fail('Exception was not thrown');
 	} catch (err) {
-		t.is(err.message, 'Response code 400 (Bad Request)');
+		t.is(err, 'It is not an url');
+	}
+});
+
+test('url not found', async t => {
+	try {
+		await postcss([plugin({baseDir: join(__dirname)})]).process('.test {background-image: url(base64(\'http://cdn.lagden.in/nottt.png\'));}');
+		t.fail('Exception was not thrown');
+	} catch (err) {
+		t.is(err.message, 'Response code 404 (Not Found)');
 	}
 });
