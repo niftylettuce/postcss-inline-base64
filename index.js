@@ -54,7 +54,7 @@ module.exports = postcss.plugin('postcss-inline-base64', opts => {
 	const regs = [];
 	return css => {
 		css.walkDecls(decl => {
-			const matches = decl.value.match(/base64\(\'(\s*[^)]+?\s*)\'\)/);
+			const matches = decl.value.match(/base64\(\'?(\s*[^)]+?\s*)\'?\)/);
 			if (matches && Array.isArray(matches) && matches.length > 1) {
 				promises.push(inLine(matches[1], options.baseDir));
 				decls.push(decl);

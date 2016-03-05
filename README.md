@@ -13,14 +13,14 @@
 ```css
 @font-face {
   font-family: 'example';
-  src: url(base64('../fonts/example.woff')) format('woff');
+  src: url(base64(../fonts/example.woff)) format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
 body {
   background-color: gray;
-  background-image: url(base64('http://cdn.lagden.in/xxx.png'))
+  background-image: url(base64(http://cdn.lagden.in/xxx.png))
 }
 
 .example {
