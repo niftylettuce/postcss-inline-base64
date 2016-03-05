@@ -1,10 +1,14 @@
-# PostCSS Inline Base64 [![Build Status][ci-img]][ci]
+# PostCSS Inline Base64
+[![Build Status][ci-img]][ci]
+[![Coverage Status][cover-img]][cover]
 
 [PostCSS] plugin for replace file to base64 encode.
 
-[PostCSS]: https://github.com/postcss/postcss
-[ci-img]:  https://travis-ci.org/lagden/postcss-inline-base64.svg
-[ci]:      https://travis-ci.org/lagden/postcss-inline-base64
+[PostCSS]:   https://github.com/postcss/postcss
+[ci-img]:    https://travis-ci.org/lagden/postcss-inline-base64.svg
+[ci]:        https://travis-ci.org/lagden/postcss-inline-base64
+[cover-img]: https://codecov.io/github/lagden/utils/coverage.svg?branch=master
+[cover]:     https://codecov.io/github/lagden/utils?branch=master
 
 ```css
 @font-face {
