@@ -20,30 +20,22 @@ function run(t, input, output, opts = { }) {
 		});
 }
 
-test('local files', t => {
-	return run(t, cssLocal, cssLocalOut, {
-		baseDir
-	});
+test('local file', t => {
+	return run(t, cssLocal, cssLocalOut, {baseDir});
 });
 
-test('external files', t => {
+test('external file', t => {
 	return run(t, cssExternal, cssExternalOut);
 });
 
-test('no file', async t => {
-	try {
-		await postcss([plugin({baseDir: join(__dirname)})]).process('.test {background-image: url(base64(\'./fixtures\'));}');
-		t.fail('Exception was not thrown');
-	} catch (err) {
-		t.is(err, 'It is not an url');
-	}
+test('file not found', t => {
+	const css = '.test {background-image: url(b64---./fixtures---);}';
+	const cssOut = '.test {background-image: url(./fixtures)/* b64 error: invalid url or file */;}';
+	return run(t, css, cssOut, {baseDir: join(__dirname)});
 });
 
-test('url not found', async t => {
-	try {
-		await postcss([plugin({baseDir: join(__dirname)})]).process('.test {background-image: url(base64(\'http://cdn.lagden.in/nottt.png\'));}');
-		t.fail('Exception was not thrown');
-	} catch (err) {
-		t.is(err.message, 'Response code 404 (Not Found)');
-	}
+test('url not found', t => {
+	const css = '.test {background-image: url(b64---"http://cdn.lagden.in/nottt.png"---);}';
+	const cssOut = '.test {background-image: url("http://cdn.lagden.in/nottt.png")/* b64 error: invalid url or file */;}';
+	return run(t, css, cssOut, {baseDir: join(__dirname)});
 });

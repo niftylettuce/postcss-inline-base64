@@ -10,25 +10,17 @@ const promisify = require('lagden-promisify');
 const status = promisify(fs.stat);
 const readfile = promisify(fs.readFile);
 
+const urlRegx = /^(https?:|ftp:)?\/\/([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+const b64Regx = /b64\-{3}\'?(\s*[^)]+?\s*)\'?\-{3}/;
+
 function find(file, dir) {
 	const f = join(dir, file);
 	return status(f)
-		.then(s => {
-			if (s.isFile()) {
-				return readfile(f);
-			}
-			return Promise.reject('It is not a file');
-		})
-		.catch(() => {
-			const isUrl = /^(https?:|ftp:)?\/\/([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(file);
-			if (isUrl) {
-				return got(file, {encoding: null}).then(r => r.body);
-			}
-			return Promise.reject('It is not an url');
-		});
+		.then(s => s.isFile() ? readfile(f) : Promise.reject())
+		.catch(() => urlRegx.test(file) ? got(file, {encoding: null, retries: 1, timeout: 5000}).then(r => r.body) : Promise.reject());
 }
 
-function inLine(file, dir) {
+function inline(file, dir) {
 	return find(file, dir)
 		.then(buf => {
 			let mime = 'application/octet-stream';
@@ -44,7 +36,8 @@ function inLine(file, dir) {
 				}
 			}
 			return `data:${mime};charset=utf-8;base64,${buf.toString('base64')}`;
-		});
+		})
+		.catch(() => false);
 }
 
 module.exports = postcss.plugin('postcss-inline-base64', opts => {
@@ -54,9 +47,9 @@ module.exports = postcss.plugin('postcss-inline-base64', opts => {
 	const regs = [];
 	return css => {
 		css.walkDecls(decl => {
-			const matches = decl.value.match(/base64\(\'?(\s*[^)]+?\s*)\'?\)/);
+			const matches = decl.value.match(b64Regx);
 			if (matches && Array.isArray(matches) && matches.length > 1) {
-				promises.push(inLine(matches[1], options.baseDir));
+				promises.push(inline(matches[1], options.baseDir));
 				decls.push(decl);
 				regs.push(matches);
 			}
@@ -65,7 +58,11 @@ module.exports = postcss.plugin('postcss-inline-base64', opts => {
 		return Promise.all(promises)
 			.then(inlines => {
 				decls.forEach((decl, idx) => {
-					decl.value = regs[idx].input.replace(regs[idx][0], inlines[idx]);
+					const repl = inlines[idx] ? inlines[idx] : regs[idx][1];
+					decl.value = regs[idx].input.replace(regs[idx][0], repl);
+					if (inlines[idx] === false) {
+						decl.value += '/* b64 error: invalid url or file */';
+					}
 				});
 			});
 	};

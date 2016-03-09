@@ -13,18 +13,22 @@
 ```css
 @font-face {
   font-family: 'example';
-  src: url(base64(../fonts/example.woff)) format('woff');
+  src: url(b64---../fonts/example.woff---) format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
 body {
   background-color: gray;
-  background-image: url(base64(http://cdn.lagden.in/xxx.png))
+  background-image: url(b64---http://cdn.lagden.in/xxx.png---)
 }
 
 .example {
   background-image: url('http://cdn.lagden.in/mask.png');
+}
+
+.invalid {
+  background-image: url(b64---'http://invalid.com/err.png'---);
 }
 ```
 
@@ -44,9 +48,17 @@ body {
 .example {
   background-image: url('http://cdn.lagden.in/mask.png');
 }
+
+.invalid {
+  background-image: url('http://invalid.com/err.png'/* b64 error: invalid url or file */);
+}
 ```
 
 ## Usage
+
+Put the **file** or **url** between **b64**.
+
+**Example:** `b64---example.png---` or `b64---'example.png'---`
 
 ```js
 postcss([ require('postcss-inline-base64')(options) ])
