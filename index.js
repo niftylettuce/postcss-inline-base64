@@ -11,7 +11,7 @@ const status = promisify(fs.stat);
 const readfile = promisify(fs.readFile);
 
 const urlRegx = /^(https?:|ftp:)?\/\/([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
-const b64Regx = /b64\-{3}\'?(\s*[^)]+?\s*)\'?\-{3}/;
+const b64Regx = /b64\-{3}[\"\']?(\s*[^)]+?\s*)[\"\']?\-{3}/;
 
 function find(file, dir) {
 	const f = join(dir, file);

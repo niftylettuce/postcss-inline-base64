@@ -10,6 +10,8 @@ const cssLocal = readFileSync(join(__dirname, 'fixtures', 'local.css')).toString
 const cssLocalOut = readFileSync(join(__dirname, 'fixtures', 'local.out.css')).toString('utf-8');
 const cssExternal = readFileSync(join(__dirname, 'fixtures', 'external.css')).toString('utf-8');
 const cssExternalOut = readFileSync(join(__dirname, 'fixtures', 'external.out.css')).toString('utf-8');
+const cssSyntax = readFileSync(join(__dirname, 'fixtures', 'syntax.css')).toString('utf-8');
+const cssSyntaxOut = readFileSync(join(__dirname, 'fixtures', 'syntax.out.css')).toString('utf-8');
 const baseDir = join(__dirname, 'fixtures');
 
 function run(t, input, output, opts = { }) {
@@ -20,22 +22,26 @@ function run(t, input, output, opts = { }) {
 		});
 }
 
-test('local file', t => {
+test('local', t => {
 	return run(t, cssLocal, cssLocalOut, {baseDir});
 });
 
-test('external file', t => {
+test('external', t => {
 	return run(t, cssExternal, cssExternalOut);
 });
 
-test('file not found', t => {
+test('syntax', t => {
+	return run(t, cssSyntax, cssSyntaxOut, {baseDir});
+});
+
+test('file error', t => {
 	const css = '.test {background-image: url(b64---./fixtures---);}';
 	const cssOut = '.test {background-image: url(./fixtures)/* b64 error: invalid url or file */;}';
 	return run(t, css, cssOut, {baseDir: join(__dirname)});
 });
 
-test('url not found', t => {
+test('url error', t => {
 	const css = '.test {background-image: url(b64---"http://cdn.lagden.in/nottt.png"---);}';
-	const cssOut = '.test {background-image: url("http://cdn.lagden.in/nottt.png")/* b64 error: invalid url or file */;}';
+	const cssOut = '.test {background-image: url(http://cdn.lagden.in/nottt.png)/* b64 error: invalid url or file */;}';
 	return run(t, css, cssOut, {baseDir: join(__dirname)});
 });

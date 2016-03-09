@@ -1,0 +1,19 @@
+.syntax--a {
+  background-image: url(b64---./example.svg---);
+}
+
+.syntax--b {
+  background-image: url('b64---./example.svg---');
+}
+
+.syntax--c {
+  background-image: url(b64---'./example.svg'---);
+}
+
+.syntax--d {
+  background-image: url("b64---./example.svg---");
+}
+
+.syntax--e {
+  background-image: url(b64---"./example.svg"---);
+}

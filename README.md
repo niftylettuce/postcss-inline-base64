@@ -20,7 +20,7 @@
 
 body {
   background-color: gray;
-  background-image: url(b64---http://cdn.lagden.in/xxx.png---)
+  background-image: url("b64---http://cdn.lagden.in/xxx.png---")
 }
 
 .example {
@@ -42,7 +42,7 @@ body {
 
 body {
   background-color: gray;
-  background-image: url(data:image/png;charset=utf-8;base64,iVBORw0K...SuQmCC);
+  background-image: url("data:image/png;charset=utf-8;base64,iVBORw0K...SuQmCC");
 }
 
 .example {
@@ -50,15 +50,13 @@ body {
 }
 
 .invalid {
-  background-image: url('http://invalid.com/err.png'/* b64 error: invalid url or file */);
+  background-image: url(http://invalid.com/err.png)/* b64 error: invalid url or file */;
 }
 ```
 
 ## Usage
 
-Put the **file** or **url** between **b64**.
-
-**Example:** `b64---example.png---` or `b64---'example.png'---`
+See [syntax](https://github.com/lagden/postcss-inline-base64/blob/master/test/fixtures/syntax.css)
 
 ```js
 postcss([ require('postcss-inline-base64')(options) ])

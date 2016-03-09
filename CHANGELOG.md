@@ -2,7 +2,7 @@
 2.0.0 / 2016-03-09
 ==================
 
-  * changed sintax: from base64(file) to b64---file---
+  * changed syntax: from base64(file) to b64---file---
   * updated tests
   * avoid errors
 
