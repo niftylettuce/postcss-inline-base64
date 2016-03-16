@@ -12,6 +12,7 @@
   ],
   "author": "Thiago Lagden <lagden@gmail.com>",
   "license": "MIT",
+  "main": "index.js",
   "repository": "lagden/postcss-inline-base64",
   "bugs": {
     "url": "https://github.com/lagden/postcss-inline-base64/issues"

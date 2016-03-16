@@ -7,8 +7,8 @@
 [PostCSS]:   https://github.com/postcss/postcss
 [ci-img]:    https://travis-ci.org/lagden/postcss-inline-base64.svg
 [ci]:        https://travis-ci.org/lagden/postcss-inline-base64
-[cover-img]: https://codecov.io/github/lagden/utils/coverage.svg?branch=master
-[cover]:     https://codecov.io/github/lagden/utils?branch=master
+[cover-img]: https://codecov.io/github/lagden/postcss-inline-base64/coverage.svg?branch=master
+[cover]:     https://codecov.io/github/lagden/postcss-inline-base64?branch=master
 
 ```css
 @font-face {
