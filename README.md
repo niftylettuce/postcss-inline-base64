@@ -14,7 +14,7 @@
 ```css
 @font-face {
   font-family: 'example';
-  src: url(b64---../fonts/example.woff---) format('woff');
+  src: url(b64---'./example.woff'---) format('woff'), url('b64---./example.woff2---') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
@@ -36,7 +36,7 @@ body {
 ```css
 @font-face {
   font-family: 'example';
-  src: url(data:application/font-woff;charset=utf-8;base64,d09...eLAAAA==) format('woff');
+  src: url(data:application/font-woff;charset=utf-8;base64,d09...eLAAAA==) format('woff'), url(data:application/font-woff;charset=utf-8;base64,d09...eLAAAA==) format('woff2');
   font-weight: normal;
   font-style: normal;
 }
@@ -57,7 +57,7 @@ body {
 
 ## Usage
 
-See [syntax](https://github.com/lagden/postcss-inline-base64/blob/master/test/fixtures/syntax.css)
+See css [syntax](https://github.com/lagden/postcss-inline-base64/blob/master/test/fixtures/syntax.css)
 
 ```js
 postcss([ require('postcss-inline-base64')(options) ])
@@ -65,14 +65,10 @@ postcss([ require('postcss-inline-base64')(options) ])
 
 ### Options
 
-Type: `object`
-
-#### baseDir
-
-Type: `string`
-Default: `./`
-
-The directory where the css file are located.
+Name     | Type    | Default | Description
+-------- | ------- | ------- | -----------
+baseDir  | string  | `./`    | Relative path from css output file
+useCache | boolean | `true`  | Reuse encode files
 
 ---
 

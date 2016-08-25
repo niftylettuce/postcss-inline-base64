@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'example';
-  src: url(b64---'./example.woff'---) format('woff');
+  src: url(b64---'./example.woff'---) format('woff'), url('b64---./example.woff2---') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
