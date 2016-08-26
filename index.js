@@ -21,7 +21,7 @@ const writeFile = pify(fs.writeFile);
 const mkdir = pify(mkdirp);
 
 const urlRegx = /^(https?:|ftp:)?\/\/([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
-const b64Regx = /b64\-{3}"?'?(\s*[^)]+?\s*)"?'?\-{3}/g;
+const b64Regx = /b64\-{3}["']?(\s*[^)]+?\s*)["']?\-{3}/g;
 const cache = join('.', '.base64-cache');
 const memCache = {};
 
@@ -29,12 +29,12 @@ debug('Dir cache ---> ', cache);
 
 function find(file, dir) {
 	const f = join(dir, file);
-	debug('Find file ---> ', file);
+	debug('Find ---> ', file);
 	if (urlRegx.test(file)) {
 		return got(file, {encoding: null, retries: 1, timeout: 5000}).then(r => r.body);
 	}
 	return access(f, fs.constants.R_OK).then(() => {
-		debug('Find access ok ---> ', f);
+		debug('Find access ---> ', f);
 		return readFile(f);
 	});
 }
@@ -95,21 +95,15 @@ function cache64(file, dir, options) {
 
 function capture(...args) {
 	const [decl, promises, decls, regs, fn, options] = args;
-	debug(decl.prop);
-	debug('decl.value ---> ', decl.value);
+	debug('decl ---> ', decl.prop, decl.value);
 	const matches = decl.value.match(b64Regx) || [];
-	const files = [];
+	debug('matches ---> ', matches);
 	for (let i = 0; i < matches.length; i++) {
 		const match = matches[i];
-		files.push(match.replace(b64Regx, '$1'));
-		regs.push(match);
-	}
-	debug('matches ---> ', matches);
-	debug('files ---> ', files);
-	for (let i = 0; i < files.length; i++) {
-		const file = files[i];
-		promises.push(fn(file, options.baseDir, options));
+		const file = match.replace(b64Regx, '$1');
 		decls.push(decl);
+		regs.push(match);
+		promises.push(fn(file, options.baseDir, options));
 	}
 }
 
@@ -120,6 +114,7 @@ module.exports = postcss.plugin('postcss-inline-base64', opts => {
 	const regs = [];
 	const fn = options.useCache || options.useMemCache ? cache64 : inline;
 	debug('Use cache ---> ', options.useCache);
+	debug('Use memory cache ---> ', options.useMemCache);
 	return css => {
 		css.walkAtRules(/^font\-face$/, rule => {
 			rule.walkDecls(/^src$/, decl => {
@@ -135,11 +130,10 @@ module.exports = postcss.plugin('postcss-inline-base64', opts => {
 
 		return Promise.all(promises)
 			.then(inlines => {
-				for (let idx = 0; idx < decls.length; idx++) {
-					const decl = decls[idx];
-					const repl = inlines[idx] || regs[idx];
-					decl.value = decl.value.replace(regs[idx], repl);
-					if (inlines[idx] === false) {
+				for (let i = 0; i < decls.length; i++) {
+					const decl = decls[i];
+					decl.value = decl.value.replace(regs[i], inlines[i] || regs[i]);
+					if (inlines[i] === false) {
 						decl.value = `${decl.value} /* b64 error: invalid url or file */`;
 					}
 				}
