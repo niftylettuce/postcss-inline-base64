@@ -1,7 +1,7 @@
 {
   "name": "postcss-inline-base64",
   "version": "2.2.0",
-  "description": "PostCSS plugin for replace file to base64 encode",
+  "description": "PostCSS plugin for replace file to base64",
   "keywords": [
     "postcss",
     "css",
