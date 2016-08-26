@@ -1,19 +1,19 @@
 .syntax--a {
-  background-image: url(b64---./example.svg---);
+  background-image: url(b64---./example.gif---);
 }
 
 .syntax--b {
-  background-image: url('b64---./example.svg---');
+  background-image: url('b64---./example.gif---');
 }
 
 .syntax--c {
-  background-image: url(b64---'./example.svg'---);
+  background-image: url("b64---./example.gif---");
 }
 
 .syntax--d {
-  background-image: url("b64---./example.svg---");
+  background-image: url(b64---'./example.gif'---);
 }
 
 .syntax--e {
-  background-image: url(b64---"./example.svg"---);
+  background-image: url(b64---"./example.gif"---);
 }

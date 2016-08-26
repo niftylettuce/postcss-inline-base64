@@ -22,27 +22,41 @@ const baseDir = join(__dirname, 'fixtures');
 function run(t, input, output, opts = { }) {
 	return postcss([plugin(opts)]).process(input)
 		.then(result => {
-			t.deepEqual(result.css, output);
-			t.deepEqual(result.warnings().length, 0);
+			t.deepEqual(result.css, output, 'different results');
+			t.is(result.warnings().length, 0, 'must be 0');
 		});
 }
 
-test.after(() => {
-	rmdir(join('.', '.postcss-inline-base64'), () => {
-		return Promise.resolve();
+function rm(cb) {
+	rmdir(join('.', '.base64-cache'), () => {
+		cb();
 	});
+}
+
+test.cb.before(t => {
+	rm(t.end);
 });
 
-test('local', t => {
-	return run(t, cssLocal, cssLocalOut, {baseDir});
+test.cb.after(t => {
+	rm(t.end);
+});
+
+test('syntax, cache and no menCache', t => {
+	const useCache = true;
+	const useMemCache = false;
+	return run(t, cssSyntax, cssSyntaxOut, {baseDir, useCache, useMemCache})
+		.then(() => run(t, cssSyntax, cssSyntaxOut, {baseDir, useCache, useMemCache}));
+});
+
+test('local, no cache and menCache', t => {
+	const useCache = false;
+	const useMemCache = true;
+	return run(t, cssLocal, cssLocalOut, {baseDir, useCache, useMemCache})
+		.then(() => run(t, cssLocal, cssLocalOut, {baseDir, useCache, useMemCache}));
 });
 
 test('external', t => {
 	return run(t, cssExternal, cssExternalOut);
-});
-
-test('syntax and cache', t => {
-	return run(t, cssSyntax, cssSyntaxOut, {baseDir, useCache: false}).then(() => run(t, cssSyntax, cssSyntaxOut, {baseDir}));
 });
 
 test('file error', t => {

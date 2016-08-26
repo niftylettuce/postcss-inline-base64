@@ -1,6 +1,6 @@
 {
   "name": "postcss-inline-base64",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "PostCSS plugin for replace file to base64 encode",
   "keywords": [
     "postcss",
@@ -26,11 +26,16 @@
     "report": "nyc report --reporter=html",
     "coverage": "nyc report --reporter=lcov | codecov",
     "pretest": "xo",
-    "test": "nyc ava"
+    "test": "nyc ava",
+    "debug": "DEBUG=b64 npm test"
   },
   "xo": {
     "esnext": true,
     "extends": "eslint-config-postcss"
+  },
+  "ava": {
+    "concurrency": 10,
+    "failFast": true
   },
   "dependencies": {
     "debug": "2.2.0",

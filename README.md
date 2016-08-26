@@ -10,6 +10,9 @@
 [cover-img]: https://codecov.io/gh/lagden/postcss-inline-base64/branch/master/graph/badge.svg
 [cover]:     https://codecov.io/gh/lagden/postcss-inline-base64
 
+## Example
+
+### input
 
 ```css
 @font-face {
@@ -32,6 +35,8 @@ body {
   background-image: url(b64---'http://invalid.com/err.png'---);
 }
 ```
+
+### output
 
 ```css
 @font-face {
@@ -65,10 +70,11 @@ postcss([ require('postcss-inline-base64')(options) ])
 
 ### Options
 
-Name     | Type    | Default | Description
--------- | ------- | ------- | -----------
-baseDir  | string  | `./`    | Relative path from css output file
-useCache | boolean | `true`  | Reuse encode files
+Name        | Type    | Default | Description
+----------- | ------- | ------- | -----------
+baseDir     | string  | `./`    | Relative path from css output file
+useCache    | boolean | `true`  | Store in cache the encoded file
+useMemCache | boolean | `false` | Store in memory the encoded file
 
 ---
 

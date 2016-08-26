@@ -1,4 +1,7 @@
 body {
-  background-color: gray;
-  background-image: url('b64---http://cdn.lagden.in/mask.png---');
+  background: #ffffff url('b64---http://cdn.lagden.in/mask.png---') no-repeat right top;
+}
+
+.another {
+  background: gray;
 }
