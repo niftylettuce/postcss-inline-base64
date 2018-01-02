@@ -20,8 +20,8 @@ const readFile = pify(fs.readFile);
 const writeFile = pify(fs.writeFile);
 const mkdir = pify(mkdirp);
 
-const urlRegx = /^(https?:|ftp:)?\/\/([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
-const b64Regx = /b64\-{3}["']?(\s*[^)]+?\s*)["']?\-{3}/g;
+const urlRegx = /^(https?:|ftp:)?\/\/([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+const b64Regx = /url\((?!['"]?(?:data):)['"]?([^'")]*.[eot|woff|woff2|ttf|otf|svg])['"]?\)/g;
 const cache = join('.', '.base64-cache');
 const memCache = {};
 
@@ -47,7 +47,7 @@ function inline(file, dir, options) {
 			if (isSvg) {
 				mime = 'image/svg+xml';
 			} else {
-				const chunk = new Buffer(262);
+				const chunk = Buffer.alloc(262);
 				buf.copy(chunk, 0, 0, 262);
 				const o = fileType(chunk);
 				if (o) {
@@ -116,14 +116,8 @@ module.exports = postcss.plugin('postcss-inline-base64', opts => {
 	debug('Use cache ---> ', options.useCache);
 	debug('Use memory cache ---> ', options.useMemCache);
 	return css => {
-		css.walkAtRules(/^font\-face$/, rule => {
+		css.walkAtRules(/^font-face$/, rule => {
 			rule.walkDecls(/^src$/, decl => {
-				capture(decl, promises, decls, regs, fn, options);
-			});
-		});
-
-		css.walkRules(rule => {
-			rule.walkDecls(/^background(\-image)?$/, decl => {
 				capture(decl, promises, decls, regs, fn, options);
 			});
 		});
@@ -132,7 +126,7 @@ module.exports = postcss.plugin('postcss-inline-base64', opts => {
 			.then(inlines => {
 				for (let i = 0; i < decls.length; i++) {
 					const decl = decls[i];
-					decl.value = decl.value.replace(regs[i], inlines[i] || regs[i]);
+					decl.value = decl.value.replace(regs[i], `url("${inlines[i] || regs[i]}")`);
 					if (inlines[i] === false) {
 						decl.value = `${decl.value} /* b64 error: invalid url or file */`;
 					}

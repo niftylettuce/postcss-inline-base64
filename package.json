@@ -38,22 +38,22 @@
     "failFast": true
   },
   "dependencies": {
-    "debug": "2.2.0",
-    "file-type": "3.8.0",
-    "got": "6.3.0",
-    "is-svg": "2.0.1",
+    "debug": "3.1.0",
+    "file-type": "7.4.0",
+    "got": "8.0.1",
+    "is-svg": "2.1.0",
     "lagden-promisify": "3.0.0",
     "mkdirp": "0.5.1",
-    "pify": "2.3.0",
-    "postcss": "5.1.2"
+    "pify": "3.0.0",
+    "postcss": "6.0.15"
   },
   "devDependencies": {
-    "ava": "0.16.0",
-    "codecov": "1.0.1",
+    "ava": "0.24.0",
+    "codecov": "3.0.0",
     "eslint-config-postcss": "2.0.2",
-    "nyc": "8.1.0",
+    "nyc": "11.4.1",
     "rmdir": "1.2.0",
-    "xo": "0.16.0"
+    "xo": "0.18.2"
   },
   "files": [
     "index.js",
